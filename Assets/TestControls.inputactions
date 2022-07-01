@@ -1,0 +1,54 @@
+{
+    "name": "TestControls",
+    "maps": [
+        {
+            "name": "Debugging",
+            "id": "31998a76-dda6-47ec-a24a-95c00d00c44b",
+            "actions": [
+                {
+                    "name": "Pathfinding",
+                    "type": "Button",
+                    "id": "2b3cf6b8-8ed3-4a64-9bc6-ab61ca1f254e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Endturn",
+                    "type": "Button",
+                    "id": "46b41537-42ec-48c0-829f-2bfb53b3d551",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4a10cd1b-79b6-4ff5-a161-48962ad5d47f",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pathfinding",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ed57b5e9-c42b-40b5-90ef-615ed7b11aae",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Endturn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

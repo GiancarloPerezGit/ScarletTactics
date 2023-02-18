@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceaf182bd12ff05449a186eea87ec295, type: 3}
+  m_Name: Thief
+  m_EditorClassIdentifier: 
+  sprite: 
+  unitName: Rando Thief
+  job1: {fileID: 11400000, guid: 504afaba90cf20a4f8ba23e629de60bf, type: 2}
+  job2: {fileID: 0}
+  mainHand: Dagger
+  offHand: 
+  head: 
+  chest: 
+  acc: 
+  stats: {fileID: 11400000, guid: 7c28ad59f04b5be4d9b6748749b12a25, type: 2}
+  tile: {x: 0, y: 7, z: 0}

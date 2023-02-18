@@ -6,19 +6,16 @@ using UnityEngine.InputSystem;
 
 public class TurnController : MonoBehaviour
 {
+    public InputMachine machine;
     public GameObject activeUnit;
     public Controller clock;
     private bool playerControl = false;
-    private int menuLayer = 0;
-    private int currentOption = 0;
-
     public GameObject baseUI;
 
     public List<Tile> selectableTiles;
 
     public TestControls tc;
 
-    private bool endTurnVar = false;
     private int reduceCT = 60;
 
     //private void Awake()
@@ -39,27 +36,20 @@ public class TurnController : MonoBehaviour
     //}
     public void Start()
     {
-        gameObject.GetComponent<MenuControls>().enabled = false;
-        gameObject.GetComponent<TileControls>().enabled = false;
-        gameObject.GetComponent<TileSelecting>().enabled = false;
+        //gameObject.GetComponent<MenuControls>().enabled = false;
+        //gameObject.GetComponent<TileControls>().enabled = false;
+        //gameObject.GetComponent<TileSelecting>().enabled = false;
 
     }
 
-    public delegate void EndTurnDelegate();
+    //public delegate void EndTurnDelegate();
 
-    public event EndTurnDelegate EndTurnEvent;
+    //public event EndTurnDelegate EndTurnEvent;
 
     public void EndTurn()
     {
         if (playerControl)
         {
-            activeUnit.GetComponent<Stats>().ct -= reduceCT;
-            if (activeUnit.GetComponent<Stats>().ct > 60)
-            {
-                activeUnit.GetComponent<Stats>().ct = 60;
-            }
-            EndTurnEvent?.Invoke();
-            activeUnit.GetComponent<Walking>().MovementEvent -= ReduceCT;
             playerControl = false;
         }
         clock.waiting = false;
@@ -75,10 +65,8 @@ public class TurnController : MonoBehaviour
         }
         else
         {
-            baseUI.SetActive(true);
-            activeUnit.GetComponent<Walking>().MovementEvent += ReduceCT;
+            machine.Restart();
             playerControl = true;
-            
         }
     }
 
@@ -97,19 +85,6 @@ public class TurnController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if(playerControl)
-        //{
-        //    if(menuLayer == 0)
-        //    {
 
-        //    }
-        //    if(endTurnVar)
-        //    {
-        //        activeUnit.GetComponent<Stats>().ct -= 80;
-        //        clock.waiting = false;
-        //        playerControl = false;
-        //        endTurnVar=false;
-        //    }
-        //}
     }
 }

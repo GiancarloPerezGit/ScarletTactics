@@ -5,8 +5,12 @@ using UnityEngine;
 public class OpenNewMenu : MenuButton
 {
     public GameObject menu;
-    public override void click()
+    public override void Click()
     {
         throw new System.NotImplementedException();
+    }
+    public override void Back()
+    {
+
     }
 }

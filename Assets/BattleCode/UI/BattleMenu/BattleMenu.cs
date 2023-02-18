@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 
 public class BattleMenu : Menu
 {
-    public TacticsControls tc;
     public TurnController turnController;
     public int startIndex = 0;
     private int totalOptions;
@@ -20,35 +19,44 @@ public class BattleMenu : Menu
         turnController = FindObjectOfType<TurnController>();    
     }
 
+    private void Start()
+    {
+        this.gameObject.transform.parent.gameObject.SetActive(false);
+    }
+
     public delegate void BattleMenuDelegate();
 
     public event BattleMenuDelegate BattleMenuEvent;
 
     private void OnEnable()
     {
-        turnController.EndTurnEvent += ResetMenu;
-
-        controller.ChangeSelectionEvent += ChangeSelection;
-        controller.SelectedEvent += Select;
-        controller.CanceledEvent += Back;
-
-        totalOptions = gameObject.transform.childCount - 1;
-        currentIndex = startIndex;
-        cursor = transform.GetChild(totalOptions).gameObject;
-        cursor.transform.position = transform.GetChild(currentIndex).position + cursorOffset;
-        if(BattleMenuEvent != null)
+        if(!disabled)
         {
-            BattleMenuEvent();
-        }
-        if(!controller.enabled)
-        {
-            controller.enabled = true;
+            //turnController.EndTurnEvent += ResetMenu;
+
+            controller.ChangeSelectionEvent += ChangeSelection;
+            controller.SelectedEvent += Select;
+            controller.CanceledEvent += Back;
+
+            totalOptions = gameObject.transform.childCount - 1;
+            currentIndex = startIndex;
+            cursor = transform.GetChild(totalOptions).gameObject;
+            cursor.transform.position = transform.GetChild(currentIndex).position + cursorOffset;
+            if (BattleMenuEvent != null)
+            {
+                BattleMenuEvent();
+            }
+            if (!controller.enabled)
+            {
+                controller.enabled = true;
+            }
+            print("enabled");
         }
     }
 
     private void OnDisable()
     {
-        turnController.EndTurnEvent -= ResetMenu;
+        //turnController.EndTurnEvent -= ResetMenu;
 
         controller.ChangeSelectionEvent -= ChangeSelection;
         controller.SelectedEvent -= Select;
@@ -86,7 +94,7 @@ public class BattleMenu : Menu
         }
         else
         {
-            this.gameObject.transform.GetChild(currentIndex).GetComponent<MenuButton>().click();
+            this.gameObject.transform.GetChild(currentIndex).GetComponent<MenuButton>().Click();
         }
         
     }
@@ -94,7 +102,6 @@ public class BattleMenu : Menu
     public override void Back()
     {
         this.gameObject.transform.parent.gameObject.SetActive(false);
-        this.enabled = false;
     }
 
     public void DisableOption(int option)

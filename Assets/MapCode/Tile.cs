@@ -6,6 +6,7 @@ public class Tile : MonoBehaviour
 {
     public int moveCost = 1;
     public float height = 0;
+    public float heightMod = 0;
     public bool tempSelect = false;
     public Edge northEdge;
     public Edge southEdge;

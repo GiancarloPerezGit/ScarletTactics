@@ -18,13 +18,13 @@ public class MoveButton : MenuButton
         ts = FindObjectOfType<TileSelecting>();
     }
 
-    public override void click()
+    public override void Click()
     {
         bm.enabled = false;
         mc.enabled = false;
-        tc.activeUnit.GetComponent<Walking>().StartListening();
-        tc.activeUnit.GetComponent<Walking>().pathfind();
-        tc.activeUnit.GetComponent<Walking>().MovementEvent += Done;
+        tc.activeUnit.GetComponent<Movement>().StartListening();
+        tc.activeUnit.GetComponent<Movement>().RangeFind();
+        tc.activeUnit.GetComponent<Movement>().MovementEvent += Done;
         ts.controller.CancelEvent += Back;
         ts.enabled = true;
         this.gameObject.transform.parent.gameObject.SetActive(false);
@@ -32,10 +32,10 @@ public class MoveButton : MenuButton
 
     public void Done()
     {
-        tc.activeUnit.GetComponent<Walking>().MovementEvent -= Done;
-        tc.activeUnit.GetComponent<Walking>().StopListening();
+        tc.activeUnit.GetComponent<Movement>().MovementEvent -= Done;
+        tc.activeUnit.GetComponent<Movement>().StopListening();
         ts.controller.CancelEvent -= Back;
-        ts.md.resetTiles();
+        ts.md.ResetTilePaint();
         ts.enabled = false;
         bm.enabled = true;
         bm.DisableOption(1);
@@ -45,12 +45,12 @@ public class MoveButton : MenuButton
 
 
 
-    public void Back()
+    public override void Back()
     {
-        tc.activeUnit.GetComponent<Walking>().MovementEvent -= Done;
-        tc.activeUnit.GetComponent<Walking>().StopListening();
+        tc.activeUnit.GetComponent<Movement>().MovementEvent -= Done;
+        tc.activeUnit.GetComponent<Movement>().StopListening();
         ts.controller.CancelEvent -= Back;
-        ts.md.resetTiles();
+        ts.md.ResetTilePaint();
         ts.enabled = false;
         mc.enabled = true;
         bm.enabled = true;

@@ -9,8 +9,13 @@ public class WaitButton : MenuButton
     {
         tc = FindObjectOfType<TurnController>();
     }
-    public override void click()
+    public override void Click()
     {
         tc.EndTurn();
+    }
+
+    public override void Back()
+    {
+        
     }
 }

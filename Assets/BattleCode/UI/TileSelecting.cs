@@ -14,14 +14,13 @@ public class TileSelecting : MonoBehaviour
 
     private Vector3 tileHeight = new Vector3(0, 0.5f, 0);
 
-    private MenuControls mc;
-    private bool tileFound = false;
+
     // Start is called before the first frame update
     private void Awake()
     {
         tc = FindObjectOfType<TurnController>();
         controller = FindObjectOfType<TileControls>();
-        mc = tc.GetComponent<MenuControls>();
+
     }
 
     private void OnEnable()
@@ -35,7 +34,7 @@ public class TileSelecting : MonoBehaviour
         controller.AscendEvent += Ascend;
         controller.DescendEvent += Descend;
         controller.SelectEvent += Select;
-        currentPosition = tc.activeUnit.GetComponent<Stats>().currentTile.transform.position;
+        currentPosition = tc.activeUnit.GetComponent<Unit>().currentTile.transform.position;
         cursor.transform.position = currentPosition + new Vector3(0,0.5f,0);
         cursor.SetActive(true);
     }
@@ -50,7 +49,11 @@ public class TileSelecting : MonoBehaviour
         controller.DescendEvent -= Descend;
         controller.SelectEvent -= Select;
         controller.enabled = false;
-        cursor.SetActive(false);
+        if(cursor != null)
+        {
+            cursor.SetActive(false);
+        }
+        
     }
 
     public void MoveUp()
@@ -213,7 +216,6 @@ public class TileSelecting : MonoBehaviour
             else if (i == 30)
             {
                 cursor.transform.position = currentPosition + tileHeight;
-                Debug.Log("Ascend");
             }
         }
     }
@@ -235,6 +237,7 @@ public class TileSelecting : MonoBehaviour
             }
         }
     }
+
     public delegate void TileSelectDelegate(Tile tile);
 
     public event TileSelectDelegate TileSelectEvent;

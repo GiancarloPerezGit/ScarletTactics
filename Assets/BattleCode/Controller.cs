@@ -10,21 +10,31 @@ public class Controller : MonoBehaviour
     public int clockTicks = 0;
     public bool active = false;
     public bool waiting = false;
-    // Start is called before the first frame update
-    void Start()
+    private bool pause = true;
+    public void Begin()
     {
-        foreach(GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
-        {
-            units.Add(enemy);
-        }
-        foreach (GameObject ally in GameObject.FindGameObjectsWithTag("Ally"))
-        {
-            units.Add(ally);
-        }
+        pause = false;
     }
-
     private void StatusCheck()
     {
+        foreach(GameObject unit in units)
+        {
+            if(unit.GetComponent<Unit>().affected.Count > 0)
+            {
+                foreach (KeyValuePair<string, StatusEffect> effect in unit.GetComponent<Unit>().affected)
+                {
+                    if(effect.Value.duration > 0)
+                    {
+                        effect.Value.duration -= 1;
+                    }
+                    if( effect.Value.duration == 0 )
+                    {
+                        unit.GetComponent<Unit>().affected.Remove(effect.Key);
+                        Destroy(effect.Value.gameObject);
+                    }
+                }
+            }
+        }
         clockTicks += 1;
         SlowCharge();
     }
@@ -40,9 +50,9 @@ public class Controller : MonoBehaviour
     {
         foreach(GameObject unit in units)
         {
-            if(unit.GetComponent<Stats>().alive)
+            if(unit.GetComponent<Unit>().alive)
             {
-                if(unit.GetComponent<Stats>().addCt())
+                if(unit.GetComponent<Stats>().AddCt())
                 {
                     activeUnits.Enqueue(unit);
                 }
@@ -57,23 +67,25 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!active)
+        if (!pause)
         {
-            StatusCheck();
-        }
-        else if(!waiting)
-        {
-            if(activeUnits.Count != 0)
+            if (!active)
             {
-                tc.activeUnit = activeUnits.Dequeue();
-                waiting = true;
-                tc.StartTurn();
+                StatusCheck();
             }
-            else
+            else if (!waiting)
             {
-                active = false;
+                if (activeUnits.Count != 0)
+                {
+                    tc.activeUnit = activeUnits.Dequeue();
+                    waiting = true;
+                    tc.StartTurn();
+                }
+                else
+                {
+                    active = false;
+                }
             }
         }
-        
     }
 }

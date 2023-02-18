@@ -5,5 +5,7 @@ using UnityEngine;
 public abstract class MenuButton : MonoBehaviour
 {
     public bool disabled = false;
-    public abstract void click();
+    public abstract void Click();
+
+    public abstract void Back();
 }

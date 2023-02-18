@@ -17,25 +17,25 @@ public class MapDict : MonoBehaviour
     public int jmp;
     private int curMov;
     public Material unselected;
-
+    public int weather;
 
     public Vector3 lineStart;
     public Vector3 lineEnd;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
-        foreach(Transform t in gameObject.transform)
+        foreach (Tile t in gameObject.transform.GetComponentsInChildren<Tile>())
         {
             mapGrid.Add(t.transform.position, t.GetComponent<Tile>());
             t.GetComponent<Tile>().height = t.gameObject.transform.position.y;
         }
-        foreach(KeyValuePair<Vector3, Tile> entry in mapGrid)
+        foreach (KeyValuePair<Vector3, Tile> entry in mapGrid)
         {
-            List<(Tile,int)> neighbors = new List<(Tile, int)>();
-            for(float i = 0; i <= 30; i += 0.5f)
+            List<(Tile, int)> neighbors = new List<(Tile, int)>();
+            for (float i = 0; i <= 30; i += 0.5f)
             {
                 Vector3 west = new Vector3(entry.Key.x - 1, i, entry.Key.z);
-                if(mapGrid.ContainsKey(west))
+                if (mapGrid.ContainsKey(west))
                 {
                     neighbors.Add((mapGrid[west], mapGrid[west].moveCost));
                 }
@@ -66,23 +66,29 @@ public class MapDict : MonoBehaviour
             }
             adjancencyList.Add(entry.Value, neighbors);
         }
-        foreach (KeyValuePair<Tile, List<(Tile,int)>> entry in adjancencyList)
+        foreach (KeyValuePair<Tile, List<(Tile, int)>> entry in adjancencyList)
         {
             string test = "Source: " + entry.Key.gameObject.name + " Neighbors: ";
             foreach ((Tile t, int i) in entry.Value)
             {
                 test += t.gameObject.name + " ";
             }
-            //print(test);
         }
-        
+
     }
 
-    public void resetTiles()
+    public void ResetTilePaint()
     {
         foreach (Transform t in gameObject.transform)
         {
             t.gameObject.GetComponent<Tile>().selected(unselected);
+        }
+    }
+
+    public void ResetTileRoutes()
+    {
+        foreach (Transform t in gameObject.transform)
+        {
             t.gameObject.GetComponent<Tile>().route = new List<Tile>();
         }
     }

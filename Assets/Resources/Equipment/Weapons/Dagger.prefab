@@ -181,12 +181,21 @@ MonoBehaviour:
   price: 100
   eLv: 1
   unitEquip: {fileID: 0}
+  vertTolerance:
+    lower: -2
+    upper: 3
+  horizRange:
+    lower: -1
+    upper: 1
   add: []
   cancel: []
   auto:
   - {fileID: 3898186861297567235, guid: e48a766431eee694cacbdd5315740280, type: 3}
   inital: []
   blockStatus: []
+  onHitEffect:
+    attack: {fileID: 0}
+    chance: 0
   ma: 0
   pa: 0
   sp: 0
@@ -229,7 +238,7 @@ MonoBehaviour:
   reflect: 0
   calculate: 0
   element: {fileID: 0}
-  counterGrasp: 0
+  counterGrasp: 1
   counterMa: 0
   counterFlood: 0
   ev: 0
@@ -246,6 +255,7 @@ MonoBehaviour:
   targetsStats: []
   tags: []
   charge: 0
+  wep: {fileID: 8241499301526993476}
 --- !u!1 &8241499301957615709
 GameObject:
   m_ObjectHideFlags: 0

@@ -59,5 +59,7 @@ public abstract class Weapon : HandEquip
     public abstract bool Equip(GameObject unit);
     public abstract int Damage(int xa, int charge, GameObject target);
 
+    public abstract int HitChance();
+
     public abstract int XAValue(int modifier, bool crit);
 }

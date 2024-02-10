@@ -257,6 +257,7 @@ public abstract class TileState : State
             machine.mapDict.ResetTilePaint();
             machine.tileCursor.SetActive(false);
             machine.ResetCursor();
+            machine.attackInfo.TurnOff();
             machine.ChangeState(previousState);
         }
     }

@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileAttackState : MonoBehaviour
+public class TileAttackState : State
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Activate()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

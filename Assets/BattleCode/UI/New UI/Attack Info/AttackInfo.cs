@@ -8,7 +8,8 @@ public class AttackInfo : MonoBehaviour
     public GameObject menu;
     public GameObject targetInfo;
     public GameObject unitInfo;
-    
+    public GameObject damage;
+
     public TextMeshProUGUI targetHpCurr;
     public TextMeshProUGUI targetHpMax;
     public TextMeshProUGUI targetMpCurr;

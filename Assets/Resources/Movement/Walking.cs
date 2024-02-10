@@ -103,8 +103,12 @@ public class Walking : Movement
             //{
             //    y.Key.selected(selected5);
             //}
-            y.Key.selected(selected);
-            tiles.Add(y.Key);
+            if(y.Key.unit == null)
+            {
+                y.Key.selected(selected);
+                tiles.Add(y.Key);
+            }
+            
             //y.Key.gameObject.GetComponent<Renderer>().material = selected;
             //print(y.Key.gameObject.name + " " + y.Value);
 

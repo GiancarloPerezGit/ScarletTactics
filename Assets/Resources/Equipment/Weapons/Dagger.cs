@@ -84,4 +84,8 @@ public class Dagger : Weapon
         return baseXa * modifier;
     }
 
+    public override int HitChance()
+    {
+        throw new System.NotImplementedException();
+    }
 }

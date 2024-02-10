@@ -9,8 +9,8 @@ public class WepAttack : Attack
 
     private void Start()
     {
+        machine = FindObjectOfType<InputMachine>();
         element = wep.ele;
-
     }
 
 
@@ -63,6 +63,7 @@ public class WepAttack : Attack
                 print("Miss");
             }
         }
+        print("Hit targets");
         return targetsStats; 
     }
 

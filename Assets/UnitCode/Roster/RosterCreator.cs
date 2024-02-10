@@ -18,6 +18,7 @@ public class RosterCreator : MonoBehaviour
         foreach (UnitTemplate ut in rt.units)
         {
             GameObject unit = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            unit.GetComponent<MeshRenderer>().material.color = Color.green;
             unit.name = ut.unitName;
             unit.AddComponent<Unit>();
             unit.AddComponent<Stats>();
@@ -44,10 +45,12 @@ public class RosterCreator : MonoBehaviour
             //unitInfo.subJob = job2;
             if (ut.mainHand != "")
             {
-                GameObject mainHand = (GameObject)Resources.Load("Equipment/Weapons/" + ut.mainHand);
-                if (mainHand != null)
+
+                
+                GameObject mainHandObj = Resources.Load<GameObject>("Equipment/Weapons/" + ut.mainHand);
+                if (mainHandObj != null)
                 {
-                    mainHand = Instantiate(mainHand);
+                    GameObject mainHand = Instantiate(mainHandObj);
                     mainHand.name = ut.mainHand;
                     mainHand.transform.parent = unit.transform;
                     unitInfo.mainHand = mainHand.GetComponent<Weapon>();
@@ -90,6 +93,7 @@ public class RosterCreator : MonoBehaviour
             {
                 unitInfo.currentTile = md.mapGrid[ut.tile];
                 unitInfo.height = unitInfo.currentTile.height;
+                unit.gameObject.transform.position = unitInfo.currentTile.transform.position + new Vector3(0,0.5f,0);
             }
             if (ut.stats.movtype == 0)
             {

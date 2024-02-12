@@ -14,7 +14,7 @@ public class MenuState : State
     public Vector3 cursorOffset = new Vector3(-115f, -12.5f, 0);
 
     public List<int> disabledStates = new List<int>();
-    private bool startMenuAdded = false;
+    public bool startMenuAdded = false;
     public override void Activate()
     {
         if(previousState == null && !startMenuAdded)

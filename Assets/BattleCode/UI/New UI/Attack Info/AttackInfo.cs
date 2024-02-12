@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+public enum damageModifier
+{
+    HP = 0,
+    MP = 1,
+    CT = 2
+}
 public class AttackInfo : MonoBehaviour
 {
     public GameObject menu;
@@ -23,6 +29,12 @@ public class AttackInfo : MonoBehaviour
     public TextMeshProUGUI unitMpMax;
     public TextMeshProUGUI unitCtCurr;
     public TextMeshProUGUI unitCtMax;
+
+    public TextMeshProUGUI damageSign;
+    public TextMeshProUGUI damageAmount;
+    public TextMeshProUGUI damageType;
+    public TextMeshProUGUI damageChance;
+
 
 
     public void UpdateTargetInfo(Stats stats)
@@ -46,6 +58,33 @@ public class AttackInfo : MonoBehaviour
         unitCtCurr.text = stats.ct.ToString();
         unitCtMax.text = "100";
         unitInfo.SetActive(true);
+        menu.SetActive(true);
+    }
+
+    public void UpdateActionInfo(damageModifier dm, int damageAmount, int successChance)
+    {
+        switch (dm)
+        {
+            case damageModifier.HP:
+                damageType.text = "HP";
+                break;
+            case damageModifier.MP:
+                damageType.text = "MP";
+                break;
+            case damageModifier.CT:
+                damageType.text = "CT";
+                break;
+        }
+        if(damageAmount < 0)
+        {
+            damageSign.text = "-";
+        }
+        else if(damageAmount > 0)
+        {
+            damageSign.text = "+";
+        }
+        damageChance.text = successChance.ToString();
+        damage.SetActive(true);
         menu.SetActive(true);
     }
 

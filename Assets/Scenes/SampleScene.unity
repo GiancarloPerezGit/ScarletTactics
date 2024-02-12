@@ -1289,6 +1289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 236274841}
   - component: {fileID: 236274842}
+  - component: {fileID: 236274843}
   m_Layer: 0
   m_Name: Confirm Attack State
   m_TagString: Untagged
@@ -1335,6 +1336,32 @@ MonoBehaviour:
   cursor: {fileID: 651916790}
   cursorOffset: {x: -115, y: -12.5, z: 0}
   disabledStates: 
+--- !u!114 &236274843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236274840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e7915967fa330f4bb78a9b5a4a8d8f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  machine: {fileID: 600038940}
+  previousState: {fileID: 2063710558}
+  nextStates:
+  - {fileID: 905698717}
+  - {fileID: 2063710558}
+  menu: {fileID: 855582239}
+  addToChain: 0
+  currentIndex: 0
+  totalOptions: 0
+  cursor: {fileID: 651916790}
+  cursorOffset: {x: -115, y: -12.5, z: 0}
+  disabledStates: 
+  damagePredict: {fileID: 0}
+  chancePredict: {fileID: 0}
 --- !u!1 &237497082
 GameObject:
   m_ObjectHideFlags: 0

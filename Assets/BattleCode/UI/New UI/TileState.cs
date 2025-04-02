@@ -22,6 +22,7 @@ public abstract class TileState : State
         currentPosition = cursor.transform.position - tileHeight;
         cursor.SetActive(true);
         mapDict = machine.mapDict;
+        SetupInfo();
         selectableTiles = RangeFind();
         machine.tileControls.UpEvent += MoveUp;
         machine.tileControls.RightEvent += MoveRight;
@@ -33,11 +34,26 @@ public abstract class TileState : State
         machine.tileControls.CancelEvent += Cancel;
     }
 
+    public void SetupInfo()
+    {
+        machine.attackInfo.Wipe();
+        if (mapDict.mapGrid[currentPosition].unit != null)
+        {
+            if(mapDict.mapGrid[currentPosition].unit != machine.turnController.activeUnit)
+            {
+                machine.attackInfo.UpdateTargetInfo(mapDict.mapGrid[currentPosition].unit.GetComponent<Stats>());
+            }
+            
+        }    
+        
+
+    }
+
     public abstract List<Tile> RangeFind();
     
     public void UpdateInfo(Tile tile)
     {
-        if(tile.unit != null)
+        if(tile.unit != null && tile.unit != machine.turnController.activeUnit)
         {
             machine.attackInfo.UpdateTargetInfo(tile.unit.GetComponent<Stats>());
         }

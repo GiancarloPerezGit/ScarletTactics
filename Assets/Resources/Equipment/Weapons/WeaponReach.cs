@@ -36,6 +36,8 @@ public class WeaponReach : RangeFinder
 
     public GameObject player;
 
+    public bool line;
+
     private void Awake()
     {
         ts = FindObjectOfType<TileSelecting>();
@@ -61,7 +63,7 @@ public class WeaponReach : RangeFinder
 
         priorityQueue.Enqueue((start, 0, start));
         reachableTiles = FindTiles(reachableTiles);
-        print(reachableTiles.Count);
+        //print(reachableTiles.Count);
         List<Tile> tiles = new List<Tile>();
         foreach (KeyValuePair<Tile, int> y in reachableTiles)
         {
@@ -87,7 +89,7 @@ public class WeaponReach : RangeFinder
             }
             tiles.Add(y.Key);
             //y.Key.gameObject.GetComponent<Renderer>().material = selected;
-            print(y.Key.gameObject.name + " " + y.Value);
+            //print(y.Key.gameObject.name + " " + y.Value);
 
         }
         player.GetComponent<Stats>().controller.tc.selectableTiles = tiles;
@@ -98,26 +100,41 @@ public class WeaponReach : RangeFinder
     {
         (float,float) heightRange = (player.GetComponent<Unit>().height + player.GetComponent<Unit>().heightMod + reachVert.Item1, player.GetComponent<Unit>().height + player.GetComponent<Unit>().heightMod + reachVert.Item2);
         playerHeight.y = player.GetComponent<Unit>().height + player.GetComponent<Unit>().heightMod;
-        for (int i = reachHoriz.Item1; i <= reachHoriz.Item2; i++)
+        if (line)
         {
-            if(i == 0)
+            for (int i = reachHoriz.Item1; i <= reachHoriz.Item2; i++)
             {
-
-            }
-            else
-            {
-                for (float k = 0; k <= 30; k += 0.5f)
+                if (i == 0)
                 {
-                    Vector3 possibleTile = new Vector3(start.transform.position.x + i, k, start.transform.position.z);
 
-                    if (md.mapGrid.ContainsKey(possibleTile))
+                }
+                else
+                {
+                    for (float k = 0; k <= 30; k += 0.5f)
                     {
-                        if (!CheckReachability(start.transform.position + playerHeight, possibleTile + playerHeight))
+                        Vector3 possibleTile = new Vector3(start.transform.position.x + i, k, start.transform.position.z);
+
+                        if (md.mapGrid.ContainsKey(possibleTile))
                         {
-                            if (k >= heightRange.Item1 && k <= heightRange.Item2)
+                            if (!CheckReachability(start.transform.position + playerHeight, possibleTile + playerHeight))
                             {
-                                print("reached");
-                                reachableTiles.Add(md.mapGrid[possibleTile], 1);
+                                if (k >= heightRange.Item1 && k <= heightRange.Item2)
+                                {
+                                    print("reached");
+                                    reachableTiles.Add(md.mapGrid[possibleTile], 1);
+                                }
+                                else if (md.mapGrid[possibleTile].unit != null)
+                                {
+                                    float unitHeight = md.mapGrid[possibleTile].unit.GetComponent<Unit>().heightMod + md.mapGrid[possibleTile].unit.GetComponent<Unit>().height;
+                                    Vector3 unitTile = new Vector3(possibleTile.x, unitHeight, possibleTile.z);
+                                    if (!CheckReachability(start.transform.position + playerHeight, unitTile + playerHeight))
+                                    {
+                                        if (unitHeight >= heightRange.Item1 && unitHeight <= heightRange.Item2)
+                                        {
+                                            reachableTiles.Add(md.mapGrid[possibleTile], 2);
+                                        }
+                                    }
+                                }
                             }
                             else if (md.mapGrid[possibleTile].unit != null)
                             {
@@ -132,82 +149,41 @@ public class WeaponReach : RangeFinder
                                 }
                             }
                         }
-                        else if (md.mapGrid[possibleTile].unit != null)
-                        {
-                            float unitHeight = md.mapGrid[possibleTile].unit.GetComponent<Unit>().heightMod + md.mapGrid[possibleTile].unit.GetComponent<Unit>().height;
-                            Vector3 unitTile = new Vector3(possibleTile.x, unitHeight, possibleTile.z);
-                            if (!CheckReachability(start.transform.position + playerHeight, unitTile + playerHeight))
-                            {
-                                if (unitHeight >= heightRange.Item1 && unitHeight <= heightRange.Item2)
-                                {
-                                    reachableTiles.Add(md.mapGrid[possibleTile], 2);
-                                }
-                            }
-                        }
                     }
                 }
-            }
-            
-        }
-        //for (int i = reachHoriz.Item1; i <= reachHoriz.Item2; i++)
-        //{
-        //    for (float k = 0; k <= 30; k += 0.5f)
-        //    {
-        //        Vector3 possibleTile = new Vector3(start.transform.position.x - i, k, start.transform.position.z);
-        //        if (md.mapGrid.ContainsKey(possibleTile))
-        //        {
-        //            if (!CheckReachability(start.transform.position + playerHeight, possibleTile + playerHeight))
-        //            {
-        //                if (k >= heightRange.Item1 && k <= heightRange.Item2)
-        //                {
-        //                    reachableTiles.Add(md.mapGrid[possibleTile], 1);
-        //                }
-        //                else if (md.mapGrid[possibleTile].unit != null)
-        //                {
-        //                    float unitHeight = md.mapGrid[possibleTile].unit.GetComponent<Unit>().heightMod + md.mapGrid[possibleTile].unit.GetComponent<Unit>().height;
-        //                    Vector3 unitTile = new Vector3(possibleTile.x, unitHeight, possibleTile.z);
-        //                    if (!CheckReachability(start.transform.position + playerHeight, unitTile + playerHeight))
-        //                    {
-        //                        if (unitHeight >= heightRange.Item1 && unitHeight <= heightRange.Item2)
-        //                        {
-        //                            reachableTiles.Add(md.mapGrid[possibleTile], 2);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            else if (md.mapGrid[possibleTile].unit != null)
-        //            {
-        //                float unitHeight = md.mapGrid[possibleTile].unit.GetComponent<Unit>().heightMod + md.mapGrid[possibleTile].unit.GetComponent<Unit>().height;
-        //                Vector3 unitTile = new Vector3(possibleTile.x, unitHeight, possibleTile.z);
-        //                if (!CheckReachability(start.transform.position + playerHeight, unitTile + playerHeight))
-        //                {
-        //                    if (unitHeight >= heightRange.Item1 && unitHeight <= heightRange.Item2)
-        //                    {
-        //                        reachableTiles.Add(md.mapGrid[possibleTile], 2);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-        for (int i = reachHoriz.Item1; i <= reachHoriz.Item2; i++)
-        {
-            if(i == 0)
-            {
 
             }
-            else
+            for (int i = reachHoriz.Item1; i <= reachHoriz.Item2; i++)
             {
-                for (float k = 0; k <= 30; k += 0.5f)
+                if (i == 0)
                 {
-                    Vector3 possibleTile = new Vector3(start.transform.position.x, k, start.transform.position.z + i);
-                    if (md.mapGrid.ContainsKey(possibleTile))
+
+                }
+                else
+                {
+                    for (float k = 0; k <= 30; k += 0.5f)
                     {
-                        if (!CheckReachability(start.transform.position + playerHeight, possibleTile + playerHeight))
+                        Vector3 possibleTile = new Vector3(start.transform.position.x, k, start.transform.position.z + i);
+                        if (md.mapGrid.ContainsKey(possibleTile))
                         {
-                            if (k >= heightRange.Item1 && k <= heightRange.Item2)
+                            if (!CheckReachability(start.transform.position + playerHeight, possibleTile + playerHeight))
                             {
-                                reachableTiles.Add(md.mapGrid[possibleTile], 1);
+                                if (k >= heightRange.Item1 && k <= heightRange.Item2)
+                                {
+                                    reachableTiles.Add(md.mapGrid[possibleTile], 1);
+                                }
+                                else if (md.mapGrid[possibleTile].unit != null)
+                                {
+                                    float unitHeight = md.mapGrid[possibleTile].unit.GetComponent<Unit>().heightMod + md.mapGrid[possibleTile].unit.GetComponent<Unit>().height;
+                                    Vector3 unitTile = new Vector3(possibleTile.x, unitHeight, possibleTile.z);
+                                    if (!CheckReachability(start.transform.position + playerHeight, unitTile + playerHeight))
+                                    {
+                                        if (unitHeight >= heightRange.Item1 && unitHeight <= heightRange.Item2)
+                                        {
+                                            reachableTiles.Add(md.mapGrid[possibleTile], 2);
+                                        }
+                                    }
+                                }
                             }
                             else if (md.mapGrid[possibleTile].unit != null)
                             {
@@ -222,64 +198,73 @@ public class WeaponReach : RangeFinder
                                 }
                             }
                         }
-                        else if (md.mapGrid[possibleTile].unit != null)
+                    }
+                }
+
+            }
+        }
+        else
+        {
+            for (int i = reachHoriz.Item1; i <= reachHoriz.Item2; i++)
+            {
+                for(int l = reachHoriz.Item1; l <= reachHoriz.Item2; l++)
+                {
+                    if (i == 0 && l == 0 || Mathf.Abs(i) + Mathf.Abs(l) > reachHoriz.Item2)
+                    {
+
+                    }
+                    else
+                    {
+                        for (float k = 0; k <= 30; k += 0.5f)
                         {
-                            float unitHeight = md.mapGrid[possibleTile].unit.GetComponent<Unit>().heightMod + md.mapGrid[possibleTile].unit.GetComponent<Unit>().height;
-                            Vector3 unitTile = new Vector3(possibleTile.x, unitHeight, possibleTile.z);
-                            if (!CheckReachability(start.transform.position + playerHeight, unitTile + playerHeight))
+                            Vector3 possibleTile = new Vector3(start.transform.position.x + i, k, start.transform.position.z + l);
+                            //print(possibleTile.ToString());
+                            if (md.mapGrid.ContainsKey(possibleTile))
                             {
-                                if (unitHeight >= heightRange.Item1 && unitHeight <= heightRange.Item2)
+                                if (!CheckReachability(start.transform.position + playerHeight, possibleTile + playerHeight))
                                 {
-                                    reachableTiles.Add(md.mapGrid[possibleTile], 2);
+                                    if (k >= heightRange.Item1 && k <= heightRange.Item2)
+                                    {
+                                        print("reached");
+                                        reachableTiles.Add(md.mapGrid[possibleTile], 1);
+                                    }
+                                    else if (md.mapGrid[possibleTile].unit != null)
+                                    {
+                                        print(md.mapGrid[possibleTile].unit.name);    
+                                        float unitHeight = md.mapGrid[possibleTile].unit.GetComponent<Unit>().heightMod + md.mapGrid[possibleTile].unit.GetComponent<Unit>().height;
+                                        Vector3 unitTile = new Vector3(possibleTile.x, unitHeight, possibleTile.z);
+                                        if (!CheckReachability(start.transform.position + playerHeight, unitTile + playerHeight))
+                                        {
+                                            if (unitHeight >= heightRange.Item1 && unitHeight <= heightRange.Item2)
+                                            {
+                                                reachableTiles.Add(md.mapGrid[possibleTile], 2);
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (md.mapGrid[possibleTile].unit != null)
+                                {
+                                    float unitHeight = md.mapGrid[possibleTile].unit.GetComponent<Unit>().heightMod + md.mapGrid[possibleTile].unit.GetComponent<Unit>().height;
+                                    Vector3 unitTile = new Vector3(possibleTile.x, unitHeight, possibleTile.z);
+                                    if (!CheckReachability(start.transform.position + playerHeight, unitTile + playerHeight))
+                                    {
+                                        if (unitHeight >= heightRange.Item1 && unitHeight <= heightRange.Item2)
+                                        {
+                                            reachableTiles.Add(md.mapGrid[possibleTile], 2);
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                
+
             }
             
         }
-        //for (int i = reachHoriz.Item1; i <= reachHoriz.Item2; i++)
-        //{
-        //    for (float k = 0; k <= 30; k += 0.5f)
-        //    {
-        //        Vector3 possibleTile = new Vector3(start.transform.position.x, k, start.transform.position.z - i);
-        //        if (md.mapGrid.ContainsKey(possibleTile))
-        //        {
-        //            if (!CheckReachability(start.transform.position + playerHeight, possibleTile + playerHeight))
-        //            {
-        //                if (k >= heightRange.Item1 && k <= heightRange.Item2)
-        //                {
-        //                    reachableTiles.Add(md.mapGrid[possibleTile], 1);
-        //                }
-        //                else if (md.mapGrid[possibleTile].unit != null)
-        //                {
-        //                    float unitHeight = md.mapGrid[possibleTile].unit.GetComponent<Unit>().heightMod + md.mapGrid[possibleTile].unit.GetComponent<Unit>().height;
-        //                    Vector3 unitTile = new Vector3(possibleTile.x, unitHeight, possibleTile.z);
-        //                    if (!CheckReachability(start.transform.position + playerHeight, unitTile + playerHeight))
-        //                    {
-        //                        if (unitHeight >= heightRange.Item1 && unitHeight <= heightRange.Item2)
-        //                        {
-        //                            reachableTiles.Add(md.mapGrid[possibleTile], 2);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            else if (md.mapGrid[possibleTile].unit != null)
-        //            {
-        //                float unitHeight = md.mapGrid[possibleTile].unit.GetComponent<Unit>().heightMod + md.mapGrid[possibleTile].unit.GetComponent<Unit>().height;
-        //                Vector3 unitTile = new Vector3(possibleTile.x, unitHeight, possibleTile.z);
-        //                if (!CheckReachability(start.transform.position + playerHeight, unitTile + playerHeight))
-        //                {
-        //                    if (unitHeight >= heightRange.Item1 && unitHeight <= heightRange.Item2)
-        //                    {
-        //                        reachableTiles.Add(md.mapGrid[possibleTile], 2);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+        
+        
 
         return reachableTiles;
     }

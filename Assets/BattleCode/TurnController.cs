@@ -15,7 +15,8 @@ public class TurnController : MonoBehaviour
     public List<Tile> selectableTiles;
 
     public TestControls tc;
-
+    public float hitChance;
+    public Unit[] attackedUnits;
     private int reduceCT = 60;
 
     //private void Awake()

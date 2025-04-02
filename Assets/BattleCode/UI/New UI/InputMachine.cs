@@ -20,6 +20,7 @@ public class InputMachine : MonoBehaviour
     public Tile selectedTile;
     public List<Tile> targetedTiles;
     public AttackInfo attackInfo;
+    
 
     public List<GameObject> menuChain;
 

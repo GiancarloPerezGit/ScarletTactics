@@ -19,12 +19,18 @@ public class MenuState : State
     {
         if(previousState == null && !startMenuAdded)
         {
-            machine.menuChain.Add(menu);
-            startMenuAdded = true;
+            if (!machine.menuChain.Contains(menu))
+            {
+                machine.menuChain.Add(menu);
+                startMenuAdded = true;
+            }
         }
         else if(addToChain)
         {
-            machine.menuChain.Add(menu);
+            if (!machine.menuChain.Contains(menu))
+            {
+                machine.menuChain.Add(menu);
+            }
             machine.EnableChain();
         }
         else

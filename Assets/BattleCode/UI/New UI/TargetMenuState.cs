@@ -13,17 +13,25 @@ public class TargetMenuState : MenuState
     {
         if (previousState == null && !startMenuAdded)
         {
-            machine.menuChain.Add(menu);
-            startMenuAdded = true;
+            if(!machine.menuChain.Contains(menu))
+            {
+                machine.menuChain.Add(menu);
+                startMenuAdded = true;
+            }
+            
         }
         else if (addToChain)
         {
-            machine.menuChain.Add(menu);
+            if (!machine.menuChain.Contains(menu))
+            {
+                machine.menuChain.Add(menu);
+                
+            }
             machine.EnableChain();
         }
         else
         {
-
+            menu.SetActive(true);
         }
 
         totalOptions = 0;

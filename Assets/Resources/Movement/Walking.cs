@@ -71,12 +71,12 @@ public class Walking : Movement
 
         
         priorityQueue.Enqueue((start, 0, start));
-        reachableTiles = FindTiles(priorityQueue, reachableTiles);
+        //reachableTiles = FindTiles(priorityQueue, reachableTiles);
         
-        foreach((Tile t, int i, Tile j) in priorityQueue)
-        {
-            Debug.Log("Jump tiles: " + t.name);
-        }
+        //foreach((Tile t, int i, Tile j) in priorityQueue)
+        //{
+        //    Debug.Log("Jump tiles: " + t.name);
+        //}
         
         reachableTiles = FindTiles(priorityQueue, reachableTiles);
         List<Tile> tiles = new List<Tile>();
@@ -125,12 +125,13 @@ public class Walking : Movement
             while (priorityQueue.Count > 0)
             {
                 (Tile, int, Tile) subject = priorityQueue.Dequeue();
-                //print("Currently testing: " + subject.Item1.gameObject.name + "with a cost of " + subject.Item2);
+                //print("Currently testing: " + subject.Item1.gameObject.name + "from " + subject.Item3.name);
                 Vector2 start = new Vector2(subject.Item3.transform.position.x, subject.Item3.transform.position.z);
                 Vector2 end = new Vector2(subject.Item1.transform.position.x, subject.Item1.transform.position.z);
                 Vector2 direction = (end - start);
                 if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
                 {
+                    
                     if (direction.x > 0)
                     {
                         if (subject.Item1.westEdge.impassable)
@@ -146,6 +147,7 @@ public class Walking : Movement
                         }
                         else
                         {
+                            //print("Currently testing: " + subject.Item1.gameObject.name + "from " + subject.Item3.name);
                             if (CheckReachability(subject.Item3.transform.position + playerHeight, subject.Item1.westEdge.transform.position + playerHeight))
                             {
                                 skip = true;
@@ -176,6 +178,7 @@ public class Walking : Movement
                 }
                 else if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y))
                 {
+                    
                     if (direction.y < 0)
                     {
                         if (subject.Item1.northEdge.impassable)
@@ -219,9 +222,18 @@ public class Walking : Movement
                         }
                     }
                 }
+                
+                
                 if (reachableTiles.ContainsKey(subject.Item1) && !skip)
                 {
-                    if (reachableTiles[subject.Item1] > subject.Item2)
+                    //print(subject.Item1.name + " Count:" + subject.Item1.route.Count);
+                    //print(subject.Item3.name + " Count:" + subject.Item3.route.Count);
+                    //print("-------------------------------------");
+                    if (subject.Item1.route.Count < subject.Item3.route.Count)
+                    {
+
+                    }
+                    else if (reachableTiles[subject.Item1] > subject.Item2)
                     {
                         reachableTiles[subject.Item1] = subject.Item2;
                         subject.Item1.route = new List<Tile>(subject.Item3.route);
@@ -240,6 +252,7 @@ public class Walking : Movement
                     {
 
                     }
+
                 }
                 else if (!skip)
                 {
@@ -253,11 +266,13 @@ public class Walking : Movement
                         subject.Item1.route = new List<Tile>(subject.Item3.route);
                         subject.Item1.route.Add(subject.Item3);
                     }
-
+                    
                     foreach ((Tile t, int i) in adjancencyList[subject.Item1])
                     {
+                        
                         if (Mathf.Abs(t.height - subject.Item1.height) <= jmp && (subject.Item2 + t.moveCost) <= mov)
                         {
+                            
                             priorityQueue.Enqueue((t, subject.Item2 + t.moveCost, subject.Item1));
                         }
                     }

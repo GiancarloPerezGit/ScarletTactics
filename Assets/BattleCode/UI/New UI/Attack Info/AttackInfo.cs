@@ -15,6 +15,7 @@ public class AttackInfo : MonoBehaviour
     public GameObject targetInfo;
     public GameObject unitInfo;
     public GameObject damage;
+    public bool attack;
 
     public TextMeshProUGUI targetHpCurr;
     public TextMeshProUGUI targetHpMax;
@@ -35,6 +36,7 @@ public class AttackInfo : MonoBehaviour
     public TextMeshProUGUI damageType;
     public TextMeshProUGUI damageChance;
 
+    private string offset = "";
 
 
     public void UpdateTargetInfo(Stats stats)
@@ -83,9 +85,27 @@ public class AttackInfo : MonoBehaviour
         {
             damageSign.text = "+";
         }
+        if(damageAmount < 10)
+        {
+            offset = "00";
+        }
+        else if(damageAmount < 100)
+        {
+            offset = "0";
+        }
+        
+        this.damageAmount.text = offset + Mathf.Abs(damageAmount).ToString();
         damageChance.text = successChance.ToString();
         damage.SetActive(true);
         menu.SetActive(true);
+    }
+
+    public void Wipe()
+    {
+        targetInfo.SetActive(false);
+        unitInfo.SetActive(false);
+        damage.SetActive(false);
+        menu.SetActive(false);
     }
 
     public void TurnOff()

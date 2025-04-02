@@ -6,6 +6,7 @@ using System.IO;
 public class RosterCreator : MonoBehaviour
 {
     public Controller controller;
+    public GameObject sprite;
     private MapDict md;
     private void Awake()
     {
@@ -13,11 +14,31 @@ public class RosterCreator : MonoBehaviour
         controller = FindObjectOfType<Controller>();
     }
 
+    public void UpdateEvasion(Unit unitInfo, Stats stats)
+    {
+        stats.pCEv = stats.job.cev;
+        if(unitInfo.offHand != null)
+        {
+            stats.pSEv = unitInfo.offHand.GetComponent<Weapon>().ev;
+        }
+        if (unitInfo.mainHand != null)
+        {
+            stats.wEv = unitInfo.mainHand.GetComponent<Weapon>().ev;
+        }
+        if(unitInfo.acc != null)
+        {
+            stats.pAEv = unitInfo.acc.GetComponent<Accessory>().pEv;
+            stats.mAEv = unitInfo.acc.GetComponent<Accessory>().mEv;
+        }
+        
+        
+    }
+
     public void Create(RosterTemplate rt)
     {
         foreach (UnitTemplate ut in rt.units)
         {
-            GameObject unit = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            GameObject unit = Instantiate(sprite);
             unit.GetComponent<MeshRenderer>().material.color = Color.green;
             unit.name = ut.unitName;
             unit.AddComponent<Unit>();
@@ -45,8 +66,6 @@ public class RosterCreator : MonoBehaviour
             //unitInfo.subJob = job2;
             if (ut.mainHand != "")
             {
-
-                
                 GameObject mainHandObj = Resources.Load<GameObject>("Equipment/Weapons/" + ut.mainHand);
                 if (mainHandObj != null)
                 {
@@ -55,6 +74,7 @@ public class RosterCreator : MonoBehaviour
                     mainHand.transform.parent = unit.transform;
                     unitInfo.mainHand = mainHand.GetComponent<Weapon>();
                     unitInfo.mainHand.Equip(unit);
+
                 }
             }
             if (ut.offHand != "")
@@ -99,6 +119,8 @@ public class RosterCreator : MonoBehaviour
             {
                 unit.AddComponent<Walking>();
             }
+
+            UpdateEvasion(unit.GetComponent<Unit>(), unit.GetComponent<Stats>());
             unit.GetComponent<Stats>().UpdateStats();
         }
     }

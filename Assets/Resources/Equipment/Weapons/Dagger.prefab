@@ -185,8 +185,8 @@ MonoBehaviour:
     lower: -2
     upper: 3
   horizRange:
-    lower: -1
-    upper: 1
+    lower: -2
+    upper: 2
   add: []
   cancel: []
   auto:
@@ -222,6 +222,7 @@ MonoBehaviour:
   selected4: {fileID: 2100000, guid: dc17f97c030480e449774181ca71ee94, type: 2}
   selected5: {fileID: 2100000, guid: b9cb4357603e262478a3dfd4313c0dc4, type: 2}
   player: {fileID: 0}
+  line: 0
 --- !u!114 &392281236211263537
 MonoBehaviour:
   m_ObjectHideFlags: 0
